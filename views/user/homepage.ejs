@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOM ONLINE</title>
+    <link rel="stylesheet" href="/css/homepage.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <h1 id="company">ECOM ONLINE</h1>
+        </div>
+        <div class="header-center">
+            <input type="text" placeholder="Search for Products, Brands and More">
+        </div>
+        <div class="header-right">
+            <div class="greeting-message">
+                <%= message %> 
+            </div>
+            <% if (message){ %>
+                <a href="cart">Cart</a>
+                <a href="wishlist">Wishlist</a>
+                <a href="myorders">My Orders</a>
+                <a href="adress">Address</a>
+                <a href="logout" style="color: red;">Log out</a>
+            <% }else { %>
+                <a href="/login">Login</a>
+                <a href="signup">Signup</a>
+            <% } %>
+        </div>
+    </div>
+    <nav class="navbar">
+        <% category.forEach(category => { %>
+            <a href="#<%= category.name %>"><%= category.name %></a>
+        <% }); %>
+    </nav>
+    <div class="banner">
+        <img src="/assets/ecommerce-banner.jpg" alt="Banner Image">
+    </div>
+    
+    <div class="main-content">
+        <% category.forEach(category => { %>
+            <section id="<%= category.name %>" class="category-section">
+                <h2><%= category.name %></h2>
+                <div class="subcategory-grid">
+                    <% category.subcategory.forEach(subcategory => { %>
+                        <div class="subcategory-item">
+                            <a href="viewproduct/products/<%= subcategory._id %>">
+                                <img src="/uploads/<%= subcategory.images[0] %>" alt="<%= subcategory.name %>">
+                               <p><%= subcategory.name %></p>
+                            </a>
+                        </div>
+                    <% }); %>
+                </div>
+            </section>
+        <% }); %>
+    </div> 
+    
+    <footer>
+        <div class="footer-links">
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+        </div>
+        <p>&copy; 2024 sachin ECOM ONLINE. All rights reserved.</p>
+    </footer>
+</body>
+</html>

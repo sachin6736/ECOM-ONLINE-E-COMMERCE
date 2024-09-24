@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOM ONLINE - Cart</title>
+    <link rel="stylesheet" href="/css/cart.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-center">
+            <input type="text" placeholder="Search for Products, Brands and More">
+        </div>
+        <div class="header-right">
+            <div class="greeting-message">
+                <%= message %> 
+            </div>
+            <% if (message){ %>
+                <a href="cart">Cart</a>
+                <a href="wishlist">Wishlist</a>
+                <a href="myorders">My Orders</a>
+                <a href="/address">Address</a>
+                <a href="/logout" style="color: red;">Log out</a>
+            <% }else { %>
+                <a href="/login">Login</a>
+                <a href="/signup">Signup</a>
+            <% } %>
+        </div>
+    </div>
+    <nav class="navbar">
+        <% category.forEach(category => { %>
+            <a href="/category/#<%= category.name %>"><%= category.name %></a>
+        <% }); %>
+    </nav>
+
+    <div class="main-content">
+        <h2>Your Cart</h2>
+        <div class="cart-items">
+            <% cart.items.forEach(item => { %>
+                <div class="cart-item">
+                    <img src="/uploads/<%= item.productId.displayimage[0] %>" alt="<%= item.productId.name %>">
+                    <div class="cart-item-details">
+                        <h3><%= item.productId.name %></h3>
+                        <p>Price: $<%= item.productId.price.toFixed(2) %></p>
+                        <p>Offer Price: $<%= item.productId.offerprice.toFixed(2) %></p>
+                        <label for="quantity-<%= item.productId._Id%>">Quantity:</label>
+                        <input type="number" id="quantity-<%= item.productId._id %>" value="<%= item.quantity %>" min="1" max="<%= item.productId.stock %>" class="quantity-input" data-item-id="<%= item.productId._id %>" data-max-quantity="<%= item.productId.stock %>">
+                        <button class="remove-item" data-item-id="<%= item._id %>">Remove</button>
+                        <h4 style="color: red;"><%= item.productId.stock %> stocks left</h4>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        <div class="cart-summary">
+            <h3>Cart Summary</h3>
+            <p>Total Items: <%= cart.items.length %></p>
+            <p>Total Price: $<%= cart.items.reduce((total, item) => total + item.productId.offerprice * item.quantity, 0).toFixed(2) %></p>
+           <a href="/orders" id="bas"> proceed to checkout</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+        </div>
+        <p>&copy; 2024 ECOM ONLINE. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/cart.js"></script>
+</body>
+</html>
+<script>
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', async () => {
+            const itemId = button.getAttribute('data-item-id');
+            console.log("itemid", itemId);
+            try {
+                const response = await fetch('/cart/remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ itemId })
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    const error = await response.json();
+                    alert(error.message);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    });
+
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', async () => {
+            const itemId = input.getAttribute('data-item-id');
+            const newQuantity = parseInt(input.value);
+            const maxQuantity = parseInt(input.getAttribute('data-max-quantity'));
+
+            if (newQuantity < 1) {
+                input.value = 1;
+                return;
+            }
+            if (newQuantity > maxQuantity) {
+                input.value = maxQuantity;
+                alert(`Sorry, only ${maxQuantity} items in stock.`);
+                return;
+            }
+
+            try {
+                const response = await fetch('/cart/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ itemId, newQuantity })
+                });
+                console.log("res",response);
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    const error = await response.json();
+                    alert(error.message);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    });
+</script>

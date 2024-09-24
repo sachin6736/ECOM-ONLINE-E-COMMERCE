@@ -1,0 +1,125 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #a2d1ff; /* Light blue background to match the homepage */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: white;
+    padding: 30px 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px; /* Increased max-width for better spacing */
+    margin-left: 20px; /* Adjusted to move container to the left */
+}
+
+.address-form {
+    flex: 0 0 45%; /* Adjust left side width */
+    margin-right: 20px; /* Space between form and saved addresses */
+}
+
+.saved-addresses {
+    flex: 0 0 45%; /* Adjust right side width */
+    background-color: #f9f9f9; /* Lighter background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Helvetica', sans-serif; /* Matching font family */
+    font-size: 24px; /* Increased font size for headings */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"],
+input[type="tel"] {
+    margin-bottom: 15px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    font-size: 16px; /* Increased font size for inputs */
+    font-family: 'Arial', sans-serif; /* Consistent font family */
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus {
+    border-color: #576b90; /* Border color matching the submit button */
+}
+
+input[type="submit"] {
+    background-color: #576b90; /* Matching the button color with the homepage theme */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px; /* Increased font size for the button */
+    font-family: 'Helvetica', sans-serif; /* Matching font family */
+}
+
+input[type="submit"]:hover {
+    background-color: #485a7a; /* Darker shade on hover */
+}
+
+.error-message {
+    background-color: #ffebee;
+    padding: 10px;
+    border: 1px solid #ffcdd2;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.saved-addresses .address-block {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #576b90;
+    padding-bottom: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .address-form, .saved-addresses {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .address-form {
+        order: 2;
+    }
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/adminhome.css">
+</head>
+<body>
+    <header class="top-nav">
+        <h1>ECOM Admin Dash Board</h1>
+    </header>
+    <div class="container">
+        <aside class="sidebar">
+            <ul>
+                <li><button onclick="navigate('users')">Users</button></li>
+                <li><button onclick="navigate('products')">Products</button></li>
+                <li><button onclick="navigate('adminhome/catandsub')">Manage Categories</button></li>
+                <li><button onclick="navigate('orders')">Orders</button></li>
+                <li><button onclick="navigate('reports')">Reports</button></li>
+                <li><button onclick="navigate('settings')">Settings</button></li>
+            </ul>
+        </aside>
+    </div>  
+
+    <script>
+        function navigate(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>

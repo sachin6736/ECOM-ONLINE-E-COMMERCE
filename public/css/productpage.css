@@ -1,0 +1,190 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.admin-sidebar {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    width: 200px;
+    min-height: 100vh;
+    padding-top: 20px;
+    transition: width 0.3s;
+}
+
+.admin-sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.admin-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.admin-sidebar ul li {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.admin-sidebar ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.admin-sidebar ul li a:hover {
+    background-color: #34495e;
+}
+
+.admin-content {
+    flex-grow: 1;
+    padding: 20px;
+    transition: padding 0.3s;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.admin-header h1 {
+    color: #333;
+    margin: 0;
+}
+
+.add-product-btn, .goback {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.add-product-btn:hover, .goback:hover {
+    background-color: #0056b3;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-table th, .product-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.product-table th {
+    background-color: #f2f2f2;
+}
+
+.product-table td img {
+    width: 50px; /* Fixed width */
+    height: 50px; /* Fixed height */
+    object-fit: cover; /* Ensures the image fits within the width and height without distortion */
+}
+
+.actions a, .actions button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.actions a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.actions a:hover {
+    color: #0056b3;
+}
+
+.actions button {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+}
+
+.actions button:hover {
+    background-color: #c82333;
+}
+
+.sorting {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.sorting label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.sorting select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+}
+
+.sorting select:focus {
+    border-color: #007bff;
+}
+
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 100%;
+        min-height: auto;
+        padding: 10px;
+    }
+
+    .admin-sidebar ul li {
+        display: inline;
+        margin: 0 5px;
+    }
+
+    .admin-content {
+        padding: 10px;
+    }
+
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-header h1 {
+        margin-bottom: 10px;
+    }
+
+    .product-table th, .product-table td {
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .product-table td img {
+        max-width: 50px;
+    }
+
+    .actions a, .actions button {
+        font-size: 12px;
+        padding: 3px 5px;
+    } 
+}

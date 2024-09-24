@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Categories and Subcategories</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Flexbox container for tables */
+    .table-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    /* Individual table styling */
+    table {
+      width: 100%;
+      max-width: 600px;
+      border-collapse: collapse;
+      margin: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+
+    /* Button styling */
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+      margin-right: 5px;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Hidden form styling */
+    #editForm,
+    #editSubcategoryForm {
+      display: none;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    #editForm input,
+    #editForm button,
+    #editSubcategoryForm input,
+    #editSubcategoryForm button {
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      table {
+        width: 100%;
+        margin: 10px 0;
+      }
+      
+      th, td {
+        display: block;
+        text-align: right;
+      }
+
+      th::before, td::before {
+        float: left;
+        font-weight: bold;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .table-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+        margin: 5px 0;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Product Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% category.forEach(category => { %>
+        <tr>
+          <td><%= category.name %></td>
+          <td><%= category.description %></td>
+          <td><%= category.productCount %></td>
+          <td>
+            <button class="editcategory" data-id="<%= category._id %>" data-name="<%= category.name %>" data-description="<%= category.description %>">Edit</button>
+            <button class="deletecategory" style="background-color: red;" data-id="<%= category._id %>">Delete</button>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Product Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% subcategory.forEach(subcategory => { %>
+        <tr>
+          <td><%= subcategory.name %></td>
+          <td><%= subcategory.productCount %></td>
+          <td>
+            <button class="editsubcategory" data-id="<%= subcategory._id %>" data-name="<%= subcategory.name %>" data-productcount="<%= subcategory.productCount %>">Edit</button>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Edit Category Form -->
+  <div id="editForm">
+    <h3>Edit Category</h3>
+    <input type="hidden" id="editId" />
+    <input type="text" id="editName" placeholder="Name" />
+    <input type="text" id="editDescription" placeholder="Description" />
+    <button id="submitEdit">Submit</button>
+  </div>
+
+  <!-- Edit Subcategory Form -->
+  <div id="editSubcategoryForm">
+    <h3>Edit Subcategory</h3>
+    <input type="hidden" id="editSubcategoryId" />
+    <input type="text" id="editSubcategoryName" placeholder="Name" />
+    <!-- <input type="number" id="editSubcategoryProductCount" placeholder="Product Count" /> -->
+    <button id="submitEditSubcategory">Submit</button>
+  </div>
+
+  <script>
+    document.querySelectorAll(".deletecategory").forEach(button => {
+      button.addEventListener('click', async () => {
+        const categoryId = button.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "If you delete a category, all products allotted will also be deleted. Consider editing the category.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch(`/adminhome/category/${categoryId}`, { method: 'DELETE' });
+              if (response.ok) {
+                Swal.fire(
+                  'Deleted!',
+                  'Your category has been deleted.',
+                  'success'
+                ).then(() => {
+                  location.reload();
+                });
+              } else {
+                Swal.fire(
+                  'Error!',
+                  'An error occurred while deleting the category.',
+                  'error'
+                );
+              }
+            } catch (error) {
+              console.error(error);
+              Swal.fire(
+                'Error!',
+                'An error occurred while deleting the category.',
+                'error'
+              );
+            }
+          }
+        });
+      });
+    });
+
+    document.querySelectorAll(".editcategory").forEach(button => {
+      button.addEventListener('click', () => {
+        const categoryId = button.getAttribute('data-id');
+        const categoryName = button.getAttribute('data-name');
+        const categoryDescription = button.getAttribute('data-description');
+
+        document.getElementById('editId').value = categoryId;
+        document.getElementById('editName').value = categoryName;
+        document.getElementById('editDescription').value = categoryDescription;
+        document.getElementById('editForm').style.display = 'block';
+      });
+    });
+
+    document.getElementById('submitEdit').addEventListener('click', async () => {
+      const id = document.getElementById('editId').value;
+      const name = document.getElementById('editName').value;
+      const description = document.getElementById('editDescription').value;
+
+      try {
+        const response = await fetch(`/adminhome/category/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, description })
+        });
+
+        if (response.ok) {
+          Swal.fire(
+            'Updated!',
+            'Your category has been updated.',
+            'success'
+          ).then(() => {
+            location.reload();
+          });
+        } else {
+          Swal.fire(
+            'Error!',
+            'An error occurred while updating the category.',
+            'error'
+          );
+        }
+      } catch (error) {
+        console.error(error);
+        Swal.fire(
+          'Error!',
+          'An error occurred while updating the category.',
+          'error'
+        );
+      }
+    });
+
+    // Subcategory Edit Logic
+    document.querySelectorAll(".editsubcategory").forEach(button => {
+      button.addEventListener('click', () => {
+        const subcategoryId = button.getAttribute('data-id');
+        const subcategoryName = button.getAttribute('data-name');
+        const subcategoryProductCount = button.getAttribute('data-productcount');
+
+        document.getElementById('editSubcategoryId').value = subcategoryId;
+        document.getElementById('editSubcategoryName').value = subcategoryName;
+        // document.getElementById('editSubcategoryProductCount').value = subcategoryProductCount;
+        document.getElementById('editSubcategoryForm').style.display = 'block';
+      });
+    });
+
+    document.getElementById('submitEditSubcategory').addEventListener('click', async () => {
+      const id = document.getElementById('editSubcategoryId').value;
+      const name = document.getElementById('editSubcategoryName').value;
+      // const productCount = document.getElementById('editSubcategoryProductCount').value;
+
+      try {
+        const response = await fetch(`/adminhome/subcategory/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name })
+        });
+
+        if (response.ok) {
+          Swal.fire(
+            'Updated!',
+            'Your subcategory has been updated.',
+            'success'
+          ).then(() => {
+            location.reload();
+          });
+        } else {
+          Swal.fire(
+            'Error!',
+            'An error occurred while updating the subcategory.',
+            'error'
+          );
+        }
+      } catch (error) {
+        console.error(error);
+        Swal.fire(
+          'Error!',
+          'An error occurred while updating the subcategory.',
+          'error'
+        );
+      }
+    });
+  </script>
+</body>
+</html>

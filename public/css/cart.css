@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header, .navbar, .footer {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left h1, .header-right a {
+    color: white;
+    text-decoration: none;
+}
+
+.header-center input {
+    width: 100%;
+    padding: 5px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-item {
+    display: flex;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.cart-item img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.cart-item-details h3, .cart-item-details p {
+    margin: 5px 0;
+}
+
+.cart-summary {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.cart-summary h3, .cart-summary p {
+    margin: 5px 0;
+}
+
+.checkout-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.checkout-btn:hover {
+    background-color: #45a049;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer p {
+    text-align: center;
+    margin: 0;
+}
+
+#bas {
+    display: inline-block; /* Ensures the link behaves like a block element */
+    padding: 8px 18px; /* Adjust padding as needed */
+    background-color: #4CAF50; /* Your desired green color */
+    color: #ffffff; /* Text color (white in this case) */
+    text-decoration: none; /* Remove underlines from the link */
+    border-radius: 5px; /* Rounded corners for the box */
+    font-weight: bold; /* Make the text bold */
+}
+
+
+@media (max-width: 768px) {
+    .cart-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cart-item img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .cart-item-details {
+        text-align: center;
+    }
+}

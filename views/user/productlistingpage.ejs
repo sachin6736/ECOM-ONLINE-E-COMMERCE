@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOM ONLINE - Products</title>
+    <link rel="stylesheet" href="/css/productlistingpage.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <h1 id="company">ECOM ONLINE</h1>
+        </div>
+        <div class="header-center">
+            <input type="text" placeholder="Search for Products, Brands and More">
+        </div>
+        <div class="header-right">
+            <div class="greeting-message">
+                <%= message %> 
+            </div>
+            <% if (message){ %>
+                <a href="/cart">Cart</a>
+                <a href="/wishlist">Wishlist</a>
+                <a href="/myorders">My Orders</a>
+                <a href="/address">Address</a>
+                <a href="/logout" style="color: red;">Log out</a>
+            <% }else { %>
+                <a href="/login">Login</a>
+                <a href="/signup">Signup</a>
+            <% } %>
+        </div>
+    </div>
+    <nav class="navbar">
+        <% category.forEach(category => { %>
+            <a href="/category/#<%= category.name %>"><%= category.name %></a>
+        <% }); %>
+    </nav>
+
+    <div class="main-content">
+        <aside class="filters">
+            <div class="filter-section">
+                <h3>Sort By</h3>
+                <div class="dropdown">
+                    <button class="dropbtn">Price</button>
+                    <div class="dropdown-content">
+                        <a href="?sort=price_low_high">Low to High</a>
+                        <a href="?sort=price_high_low">High to Low</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Stock</button>
+                    <div class="dropdown-content">
+                        <a href="?sort=newest">Newest</a>
+                        <a href="?sort=oldest">Oldest</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Brand</button>
+                    <div class="dropdown-content">
+                        <% products.forEach(product => { %>
+                            <a href="?brand=<%= product.brand %>"><%= product.brand %></a>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <section class="product-section">
+            <div class="product-grid">
+                <% products.forEach(product => { %>
+                    <div class="product-item">
+                        <a href="/product/<%= product.id %>">
+                            <img src="/uploads/<%= product.displayimage[0] %>" alt="<%= product.name %>">
+                            <p class="product-name"><%= product.name %></p>
+                            <p class="product-price">
+                                <span class="original-price">$<%= product.price.toFixed(2) %></span>
+                                $<%= product.offerprice.toFixed(2) %>
+                            </p>
+                        </a>
+                        <div class="product-buttons">
+                            <button class="add-to-cart" data-productid="<%= product._id %>" >Add to Cart</button>
+                            <button class="add-to-wishlist" data-productid="<%= product._id %>" >Wishlist</button>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    </div> 
+    
+    <footer>
+        <div class="footer-links">
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+        </div>
+        <p>&copy; 2024 ECOM ONLINE. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+
+<script>
+    document.querySelectorAll(".add-to-cart").forEach(button=>{
+        button.addEventListener('click',async()=>{
+           const productid = button.getAttribute("data-productid");
+           console.log(productid);
+           try{
+            const response = await fetch('/cart/add',{
+                method : 'POST',
+                headers : {
+                    'Content-Type':'Application/json'
+                },
+                body: JSON.stringify({productid})
+            });
+            if (response.status === 401) {
+                // Redirect to login page if not logged in
+                window.location.href = '/login';
+                return;
+            }
+            if (response.ok) {
+                // Change button text to "Go to Cart"
+                button.textContent = "Go to Cart";
+                button.classList.add("go-to-cart");
+                button.classList.remove("add-to-cart");
+                button.onclick = () => window.location.href = '/cart';
+            } else {
+                console.log('Failed to add to cart');
+            }
+        }catch(error){
+            console.log(error)
+        }
+        })
+        
+    })
+</script>

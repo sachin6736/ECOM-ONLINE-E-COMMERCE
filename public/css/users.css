@@ -1,0 +1,104 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Add Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Container for table and details */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.table-container {
+    flex-grow: 1;
+    min-width: 300px; /* Minimum width for table container */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.details-container {
+    flex-basis: 300px; /* Base width for details container */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.details-btn, button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #667fa7;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Hover effect for buttons and table rows */
+.details-btn:hover, button:hover,
+table tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center; /* Center items on smaller screens */
+    }
+
+    .table-container,
+    .details-container {
+        width: 100%; /* Full width on smaller screens */
+        max-width: none; /* Remove max-width restriction */
+        margin-bottom: 20px; /* Space below each section */
+        order: unset; /* Reset order to natural flow */
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.2em; /* Adjust font size for smaller screens */
+    }
+
+    .details-btn, button {
+        padding: 6px 10px; /* Adjust padding for smaller buttons */
+        font-size: 0.8em; /* Adjust font size for smaller buttons */
+    }
+
+    table th, table td {
+        padding: 8px; /* Adjust padding for smaller table cells */
+        font-size: 0.8em; /* Adjust font size for smaller text */
+    }
+
+    table tr {
+        display: block;
+        margin-bottom: 10px;
+        border: 1px solid #ddd; /* Add border to separate rows */
+        border-radius: 5px;
+    }
+}

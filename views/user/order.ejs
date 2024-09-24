@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOM ONLINE - Order</title>
+    <link rel="stylesheet" href="/css/order.css">
+</head>
+<body>
+    <nav class="navbar">
+        <% category.forEach(category => { %>
+            <a href="/category/#<%= category.name %>"><%= category.name %></a>
+        <% }); %>
+    </nav>
+
+    <div class="main-content">
+        <h2>Order Details</h2>
+        <div class="order-page">
+            <div class="address-form">
+                <h3>Address</h3>
+                <form action="/addAddress" method="POST">
+                    <label for="street">street</label>
+                    <input type="text" id="street" name="street" value="<%= use.address[0].street %>" required>
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" value="<%= use.address[0].city %>" required>
+                    <label for="state">State:</label>
+                    <input type="text" id="state" name="state" value="<%= use.address[0].state %>" required>
+                    <label for="zip">Zip Code:</label>
+                    <input type="text" id="zip" name="zip" value="<%= use.address[0].zip %>" required>
+                    <label for="landmark">Landmark:</label>
+                    <input type="text" id="landmark"  name="landmark" value="<%= use.address[0].landmark %>">
+                    <label for="mobile">Mobile:</label>
+                    <input type="text" id="mobile" name="mobile" value="<%= use.address[0].mobile %>" required>
+                    <button type="submit" class="submit-btn">Add adress</button>
+                    <button id="edit">Select adress</button>
+                    <button id="confirm">Confirm adress</button>
+                </form>
+            </div>
+            <div class="cart-details">
+                <div class="cart-items">
+                    <% cart.items.forEach(item => { %>
+                        <div class="cart-item">
+                            <img src="/uploads/<%= item.productId.displayimage[0] %>" alt="<%= item.productId.name %>">
+                            <div class="cart-item-details">
+                                <h3><%= item.productId.name  %></h3>
+                                <p> Price: $<%= item.productId.offerprice.toFixed(2) %></p>
+                                <label>Quantity: <%= item.quantity %></label>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+                <div class="cart-summary">
+                    <h3>Cart Summary</h3>
+                    <p>Total Items: <%= cart.items.length %></p>
+                    <p>Total Price: $<%= cart.items.reduce((total, item) => total + item.productId.offerprice * item.quantity, 0).toFixed(2) %></p>
+                </div>
+                <div class="payment-method">
+                    <h3>Payment Method</h3>
+                    <form action="/processPayment" method="POST">
+                        <label for="payment-method">Select Payment Method:</label>
+                        <select id="payment-method" name="paymentMethod" required>
+                            <option value="cod">Cash on Delivery</option>
+                            <option value="online">Online Payment</option>
+                        </select>
+                        <button type="submit" class="submit-btn">Confirm Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+        </div>
+        <p>&copy; 2024 ECOM ONLINE. All rights reserved.</p>
+    </footer>
+</body>
+</html>

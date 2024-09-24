@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+    <div class="wrapper">
+      <h2>Registration</h2>
+      <form id="form" action="/signup" method="post" novalidate>
+          <div class="input-box">
+              <input id="username" type="text" placeholder="Name" required name="name">
+              <div id="name_error" class="error-message"></div>
+          </div>
+          <div class="input-box">
+              <input id="email" type="text" placeholder="Email" required name="email">
+              <div id="email_error" class="error-message"></div>
+          </div>
+          <div class="input-box">
+              <input id="password" type="password" placeholder="Password" required name="password">
+              <div id="password_error" class="error-message"></div>
+          </div>
+          <div class="input-box">
+              <input id="cnfrmpassword" type="password" placeholder="Confirm Password" required name="cnfrmpassword">
+              <div id="cnfrmpassword_error" class="error-message"></div>
+          </div>
+          <div class="policy">
+              <input type="checkbox" id="terms-checkbox">
+              <h3 id="terms-text">I accept all terms & conditions</h3>
+          </div>
+          <div class="input-box button">
+              <input type="submit" value="Register Now">
+          </div>
+          <div class="text">
+              <h3>Already have an account? <a href="/login">Login now</a></h3>
+              <div class="error-message">
+                  <p><%= errormessage %></p>
+              </div>
+          </div>
+      </form>
+  </div>
+  <script>
+      const form = document.getElementById('form');
+      const username = document.getElementById('username');
+      const nameError = document.getElementById('name_error');
+      const email = document.getElementById('email');
+      const emailError = document.getElementById('email_error');
+      const password = document.getElementById('password');
+      const passwordError = document.getElementById('password_error');
+      const cnfrmpassword = document.getElementById('cnfrmpassword');
+      const cnfrmpasswordError = document.getElementById('cnfrmpassword_error');
+      const termsCheckbox = document.getElementById('terms-checkbox');
+
+      form.addEventListener('submit', (event) => {
+          const usernameValue = username.value.trim();
+          const emailValue = email.value.trim();
+          const passwordValue = password.value.trim();
+          const cnfrmpasswordValue = cnfrmpassword.value.trim();
+
+          // Name validation
+          if (usernameValue === '') {
+              nameError.innerText = "Name is required";
+              event.preventDefault();
+          } else if (usernameValue.length < 3) {
+              nameError.innerText = "Name should contain at least 3 characters";
+              event.preventDefault();
+          } else {
+              nameError.innerText = "";
+          }
+
+          // Email validation
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          if (emailValue === '') {
+              emailError.innerText = "Email is required";
+              event.preventDefault();
+          } else if (!emailRegex.test(emailValue)) {
+              emailError.innerText = "Enter a valid email";
+              event.preventDefault();
+          } else {
+              emailError.innerText = "";
+          }
+
+          // Password validation
+          const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+          if (passwordValue === '') {
+              passwordError.innerText = "Enter password";
+              event.preventDefault();
+          } else if (!passRegex.test(passwordValue)) {
+              passwordError.innerText = "Password should contain uppercase, lowercase, numbers, and be at least 8 characters long";
+              event.preventDefault();
+          } else {
+              passwordError.innerText = "";
+          }
+
+          // Confirm password validation
+          if (cnfrmpasswordValue === '') {
+              cnfrmpasswordError.innerText = "Please confirm password";
+              event.preventDefault();
+          } else if (cnfrmpasswordValue !== passwordValue) {
+              cnfrmpasswordError.innerText = "Passwords do not match";
+              event.preventDefault();
+          } else {
+              cnfrmpasswordError.innerText = '';
+          }
+
+          // Terms and conditions validation
+          if (!termsCheckbox.checked) {
+              // Remove and re-add the class to restart the animation
+              document.getElementById('terms-text').classList.remove('vibrate');
+              void document.getElementById('terms-text').offsetWidth;
+              document.getElementById('terms-text').classList.add('vibrate');
+              event.preventDefault();
+          } else {
+              document.getElementById('terms-text').classList.remove('vibrate');
+          }
+      });
+  </script>
+</body>
+</html>

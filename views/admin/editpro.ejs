@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="/css/productpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .edit-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .edit-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        .edit-container form div {
+            margin-bottom: 15px;
+        }
+
+        .edit-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .edit-container input,
+        .edit-container textarea,
+        .edit-container select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .edit-container textarea {
+            height: 100px;
+        }
+
+        .edit-container button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .edit-container button:hover {
+            background: #0056b3;
+        }
+
+        .edit-container .back-button {
+            display: block;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .edit-container .back-button:hover {
+            color: #0056b3;
+        }
+
+        .img-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .img-preview img {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <a href="/adminhome" class="back-button"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        <h1>Edit Product</h1>
+        <form action="/products/<%= product._id %>/edit" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="name" value="<%= product.name %>" required>
+            </div>
+            <div>
+                <label for="brand">Brand:</label>
+                <input type="text" id="brand" name="brand" value="<%= product.brand %>" required>
+            </div>
+            <div>
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" value="<%= product.price %>" required>
+            </div>
+            <div>
+                <label for="offerPrice">Offer Price:</label>
+                <input type="number" id="offerPrice" name="offerprice" value="<%= product.offerprice %>" required>
+            </div>
+            <div>
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" value="<%= product.stock %>" required>
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required><%= product.description %></textarea>
+            </div>
+            <div>
+                <label for="category">Category:</label>
+                <select id="productCategory" name="category" required>
+                    <% categ.forEach((category) => { %>
+                        <option value="<%= category._id %>" <%= product.category._id.equals(category._id) ? 'selected' : '' %>><%= category.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div>
+                <label for="subcategory">Subcategory:</label>
+                <select id="productSubcategory" name="subcategory" required>
+                    <% sub.forEach((subcategory) => { %>
+                        <option value="<%= subcategory._id %>" <%= product.subcategory._id.equals(subcategory._id) ? 'selected' : '' %>><%= subcategory.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div>
+                <label for="image">Display Image</label>
+                <input type="file" id="image" name="displayimage" accept="image/*">
+                <div class="img-preview">
+                    <% product.displayimage.forEach(image =>{ %>
+                        <img src="/uploads/<%= image %>" alt="<%= product.name %>">
+                    <% }); %>
+                </div>
+            </div>
+            <div>
+                <label for="image">Images</label>
+                <input type="file" id="productImages" name="images" accept="image/*" multiple>
+                <div class="img-preview">
+                    <% product.images.forEach(image =>{ %>
+                        <img src="/uploads/<%= image %>" alt="<%= product.name %>">
+                    <% }); %>
+                </div>
+            </div>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Address Form</title>
+    <link rel="stylesheet" href="/css/address.css">
+</head>
+<body>
+    <div class="container">
+        <div class="address-form">
+            <h1><%= user1[0].name %> - Enter Address</h1>
+            <form action="/adress" method="POST">
+                <label for="street">Street:</label>
+                <input type="text" id="street" name="street">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state">
+                <label for="zip">Zip Code:</label>
+                <input type="text" id="zip" name="zip">
+                <label for="landmark">Landmark:</label>
+                <input type="text" id="landmark" name="landmark">
+                <label for="mobile">Mobile Number:</label>
+                <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required>
+                <input type="submit" value="Submit">
+            </form>
+        </div>   
+        <div class="saved-addresses">
+            <h2>Saved Addresses</h2>
+            <% user1[0].address.forEach(function(ad) { %>
+                <div class="address-block">
+                    <p >Street: <%= ad.street %></p>
+                    <p>City: <%= ad.city %></p>
+                    <p>State: <%= ad.state %></p>
+                    <p>Zip Code: <%= ad.zip %></p>
+                    <p>Landmark: <%= ad.landmark %></p>
+                    <p>Mobile Number: <%= ad.mobile %></p>
+                </div>
+            <% }); %>
+            <div class="error-message">
+                <p style="color: red;"><%= errormessage %></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Product</title>
+    <link rel="stylesheet" href="/css/productform.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="admin-sidebar">
+            <h2>ECOM Admin Dash Board</h2>
+            <ul>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/settings">Settings</a></li>
+            </ul>
+        </nav>
+        <div class="admin-content">
+            <h1>Add New Product</h1>
+            <form action="/products/add" method="POST" enctype="multipart/form-data">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="name" required>
+                <label for="productBrand">Product Brand:</label>
+                <input type="text" id="productName" name="brand" required>
+
+                <label for="productPrice">Price:</label>
+                <input type="number" id="productPrice" name="price" min="0"  required>
+                <label for="offerPrice">Offer Price:</label>
+                <input type="number" id="offerPrice" name="offerprice" min="0" required>
+
+                <label for="productDescription">Description:</label>
+                <textarea id="productDescription" name="description" required></textarea>
+
+                <label for="productCategory">Category:</label>
+                <select id="productCategory" name="category" required>
+                    <% cate.forEach((category) => { %>
+                        <option value="<%= category._id %>"><%= category.name %></option>
+                    <% }); %>
+                </select>
+
+                <label for="productSubcategory">Subcategory:</label>
+                <select id="productSubcategory" name="subcategory" required>
+                    <% subcat.forEach((subcategory) => { %>
+                        <option value="<%= subcategory._id %>"><%= subcategory.name %></option>
+                    <% }); %>
+                </select>
+                <label for="displayImage">displayImage:</label>
+                <input type="file" id="displayImage" name="displayimage" accept="image/*"  required>
+                <label for="productImages">Images:</label>
+                <input type="file" id="productImages" name="images" accept="image/*" multiple required>
+                <label for="productStock">Stock:</label>
+                <input type="number" id="productStock" name="stock" min="0" value="0" required>
+                <button type="submit">Add Product</button>
+                <a href="#" class="addcat" onclick="toggleForm(event, 'categoryForm')">Add Category</a>
+            </form>
+
+            <div id="categoryForm" class="form-container">
+                <h2>Add New Category</h2>
+                <form action="/categories/add" method="POST">
+                    <label for="categoryName">Category Name:</label>
+                    <input type="text" id="categoryName" name="name" required>
+
+                    <label for="categoryDescription">Description:</label>
+                    <textarea id="categoryDescription" name="description" required></textarea>
+
+                    <button type="submit">Add Category</button>
+                    <a href="#" class="addcat" onclick="toggleForm(event, 'subcategoryForm')">Add Subcategory</a>
+                </form>
+            </div>
+
+            <div id="subcategoryForm" class="form-container">
+                <h2>Add New Subcategory</h2>
+                <form action="/subcategories/add" method="POST" enctype="multipart/form-data">
+                    <label for="subcategoryName">Subcategory Name:</label>
+                    <input type="text" id="subcategoryName" name="name" required>
+                    <label for="subcategoryImage">Images:</label>
+                    <input type="file" id="subcategoryImages" name="images" accept="image/*" multiple required>
+                    <label for="parentCategory">Category:</label>
+                    <select id="parentCategory" name="category" required>
+                        <% cate.forEach((category) => { %>
+                            <option value="<%= category._id %>"><%= category.name %></option>
+                        <% }); %>
+                    </select>
+
+                    <button type="submit">Add Subcategory</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm(event, formId) {
+            event.preventDefault();
+            const form = document.getElementById(formId);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+                form.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                form.style.display = 'none';
+            }
+        }
+
+        const productCategory = document.getElementById('productCategory');
+        const productSubcategory = document.getElementById('productSubcategory');
+
+        productCategory.addEventListener('change', async () => {
+            const categoryId = productCategory.value;
+
+            // Fetch subcategories based on the selected category (make an API request)
+            try {
+                const response = await fetch(`/subcategories/${categoryId}`);
+                const subcategories = await response.json();
+
+                // Clear existing subcategory options
+                productSubcategory.innerHTML = '';
+
+                // Populate subcategory options
+                subcategories.forEach((subcategory) => {
+                    const option = document.createElement('option');
+                    option.value = subcategory._id;
+                    option.textContent = subcategory.name;
+                    productSubcategory.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching subcategories:', error);
+            }
+        });
+    </script>
+</body>
+</html>

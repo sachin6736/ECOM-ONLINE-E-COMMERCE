@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="/css/productpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h1>All Products</h1>
+                <div class="sorting">
+                    <label for="sort-options">Sort by:</label>
+                    <select id="sort-options">
+                        <option value="price">Price</option>
+                        <option value="offerprice">Offer Price</option>
+                        <option value="stock">Stock</option>
+                        <option value="createdAt">Date</option>
+                    </select>
+                    <label for="sort-order">Order:</label>
+                    <select id="sort-order">
+                        <option value="asc">Low to High</option>
+                        <option value="desc">High to Low</option>
+                    </select>
+                    <button id="filter-button">Filter</button>
+                </div>
+                <a href="/adminhome" class="goback">back to home</a>
+                <a href="/products/new" class="add-product-btn"><i class="fas fa-plus"></i> Add Product</a>
+            </div>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Brand</th>
+                        <th>Price</th>
+                        <th>Offer Price</th>
+                        <th>Stock</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Subcategory</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach(product => { %>
+                        <tr>
+                            <td><img  src="/uploads/<%= product.displayimage[0] %>" alt="<%= product.name %>"></td>
+                            <td><%= product.name %></td>
+                            <td><%= product.brand %></td>
+                            <td>$<%= product.price %></td>
+                            <td>$<%= product.offerprice %></td>
+                            <td><%= product.stock %></td>
+                            <td>
+                                <span class="short-description"><%= product.description.substring(0, 100) %></span>
+                                <span class="full-description" style="display: none;"><%= product.description %></span>
+                                <% if (product.description.length > 100) { %>
+                                    <button class="read-more-btn">Read More</button>
+                                <% } %>
+                            </td>
+                            <td><%= product.category.name %></td>
+                            <td><%= product.subcategory.name %></td>
+                            <td><%= product.createdAt %></td>
+                            <td class="actions">
+                                <a href="/products/<%= product._id %>/edit"><i class="fas fa-edit"></i> Edit</a>
+                                <form action="/products/<%= product._id %>" method="POST" style="display:inline;">
+                                    <button type="submit"><i class="fas fa-trash"></i> Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const readMoreButtons = document.querySelectorAll('.read-more-btn');
+        const sortOptions = document.getElementById('sort-options');
+        const sortOrder = document.getElementById('sort-order');
+        const filterButton = document.getElementById('filter-button');
+
+        readMoreButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const descriptionCell = this.closest('td');
+                const shortDescription = descriptionCell.querySelector('.short-description');
+                const fullDescription = descriptionCell.querySelector('.full-description');
+
+                if (shortDescription.style.display === 'none') {
+                    shortDescription.style.display = 'inline';
+                    fullDescription.style.display = 'none';
+                    this.textContent = 'Read More';
+                } else {
+                    shortDescription.style.display = 'none';
+                    fullDescription.style.display = 'inline';
+                    this.textContent = 'Read Less';
+                }
+            });
+        });
+
+        filterButton.addEventListener('click', function () {
+            const selectedOption = sortOptions.value;
+            const selectedOrder = sortOrder.value;
+            window.location.href = `/products?sort=${selectedOption}&order=${selectedOrder}`;
+        });
+    });
+</script>

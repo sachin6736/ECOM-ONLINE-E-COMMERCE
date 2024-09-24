@@ -1,0 +1,136 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.wrapper {
+  background-color: white;
+  padding: 30px 25px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.wrapper h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+form .input-box {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+form .input-box input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+form .input-box input:focus {
+  border-color: #667fa7;
+}
+
+.policy {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.policy input {
+  margin-right: 10px;
+}
+
+.policy h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.policy h3.vibrate {
+  animation: vibrate 0.3s linear;
+  color: red;
+}
+
+@keyframes vibrate {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+}
+
+.input-box.button input {
+  background-color: #667fa7;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input-box.button input:hover {
+  background-color: #576b90;
+}
+
+.text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.text a {
+  color: #667fa7;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.text a:hover {
+  color: #333;
+}
+
+.error-message {
+  color: red;
+  width: fit-content;
+  margin-top: 10px;
+  font-size: small;
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+  .wrapper {
+      padding: 20px 15px;
+  }
+
+  .wrapper h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+  }
+
+  .policy h3 {
+      font-size: 12px;
+  }
+
+  .text {
+      font-size: 12px;
+  }
+}
